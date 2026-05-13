@@ -1,8 +1,7 @@
 import axios from 'axios';
 
 const API = axios.create({
-    // Using a relative path so the Vite proxy can handle CORS issues
-    baseURL: `${import.meta.env.VITE_API_URL}/api` || 'https://ai-mock-interview-73qo.onrender.com/api',
+    baseURL: import.meta.env.VITE_API_URL || 'https://ai-mock-interview-73qo.onrender.com',
     withCredentials: true,
 });
 
@@ -23,11 +22,11 @@ API.interceptors.response.use(
     (error) => {
         const status = error.response?.status;
         const url = error.config?.url;
-        
+
         console.error(`API Error [${status}]:`, url, error.response?.data);
-        
+
         const isAuthEndpoint = url?.includes('/auth/login') || url?.includes('/auth/register');
-        
+
         if (status === 401 && !isAuthEndpoint) {
             localStorage.removeItem('token');
             localStorage.removeItem('user');
@@ -35,12 +34,11 @@ API.interceptors.response.use(
                 window.location.href = '/login';
             }
         }
-        
-        // Handle CORS or network errors
+
         if (status === 403 || !error.response) {
             console.error('CORS/Network Error: Backend API may be down or blocking requests');
         }
-        
+
         return Promise.reject(error);
     }
 );
