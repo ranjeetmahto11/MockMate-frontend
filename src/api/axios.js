@@ -2,7 +2,8 @@ import axios from 'axios';
 
 const API = axios.create({
     // Using a relative path so the Vite proxy can handle CORS issues
-    baseURL: '/api',
+    baseURL: import.meta.env.VITE_API_URL,
+    withCredentials: true,
 });
 
 // Request interceptor for adding the bearer token
