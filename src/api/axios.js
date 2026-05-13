@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const API = axios.create({
     // Using a relative path so the Vite proxy can handle CORS issues
-    baseURL: import.meta.env.VITE_API_URL || 'https://ai-mock-interview-73qo.onrender.com',
+    baseURL: `${import.meta.env.VITE_API_URL}/api` || 'https://ai-mock-interview-73qo.onrender.com/api',
     withCredentials: true,
 });
 
