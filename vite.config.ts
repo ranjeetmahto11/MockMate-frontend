@@ -9,7 +9,7 @@ export default defineConfig({
     strictPort: true,
     proxy: {
       '/api': {
-        target: 'https://ai-mock-interview-73qo.onrender.com',
+        target: process.env.VITE_API_URL || 'https://ai-mock-interview-73qo.onrender.com',
         changeOrigin: true,
         secure: false,
       }
