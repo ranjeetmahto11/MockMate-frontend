@@ -147,6 +147,12 @@ const InterviewRoom = () => {
             return;
         }
 
+        // 👇 Guard against null question
+        if (!currentQuestion?.questionId) {
+            toast.error('Question not loaded. Please skip.');
+            return;
+        }
+
         setTimerActive(false);
         setSubmitting(true);
         if (isListening) recognitionRef.current?.stop();
@@ -154,7 +160,7 @@ const InterviewRoom = () => {
         try {
             const res = await API.post('/api/interviews/submit-answer', {
                 interviewId: interview.interviewId,
-                questionId:  currentQuestion?.questionId,
+                questionId:  currentQuestion.questionId,
                 answerText:  answer || "No response recorded.",
             });
 
@@ -163,9 +169,12 @@ const InterviewRoom = () => {
             setAllScores(updatedScores);
 
             if (res.data.isLastQuestion) {
-                const final = res.data.overallScore ?? (updatedScores.reduce((a, b) => a + b, 0) / updatedScores.length).toFixed(1);
+                const final = res.data.overallScore ??
+                    (updatedScores.reduce((a, b) => a + b, 0) / updatedScores.length).toFixed(1);
                 setOverallScore(final);
-                setCompleted(true);
+                setFeedback(res.data);
+                setShowFeedback(true);
+                return;
             }
 
             setFeedback(res.data);
@@ -178,25 +187,36 @@ const InterviewRoom = () => {
             setSubmitting(false);
         }
     };
-
     const handleSkip = () => {
-        if (currentIndex >= questions.length - 1) {
+        const nextIndex = currentIndex + 1;
+
+        if (nextIndex >= questions.length) {
             setCompleted(true);
             return;
         }
+
         setAnswer('');
         setTimer(120);
-        setCurrentIndex(prev => prev + 1);
+        setTimerActive(true);
+        setCurrentIndex(nextIndex);
         toast('Protocol Skipped', { icon: '⏭️' });
     };
 
     const handleNext = () => {
+        const nextIndex = currentIndex + 1;
+
+        if (nextIndex >= questions.length) {
+            setCompleted(true);
+            setShowFeedback(false);
+            return;
+        }
+
         setAnswer('');
         setFeedback(null);
         setShowFeedback(false);
         setTimer(120);
         setTimerActive(true);
-        setCurrentIndex((prev) => prev + 1);
+        setCurrentIndex(nextIndex);
     };
 
     const formatTime = (secs) => {
