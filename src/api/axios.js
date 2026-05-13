@@ -21,8 +21,11 @@ API.interceptors.response.use(
     (response) => response,
     (error) => {
         const status = error.response?.status;
+        const url = error.config?.url;
         
-        const isAuthEndpoint = error.config?.url?.includes('/auth/login') || error.config?.url?.includes('/auth/register');
+        console.error(`API Error [${status}]:`, url, error.response?.data);
+        
+        const isAuthEndpoint = url?.includes('/auth/login') || url?.includes('/auth/register');
         
         if (status === 401 && !isAuthEndpoint) {
             localStorage.removeItem('token');
@@ -31,6 +34,12 @@ API.interceptors.response.use(
                 window.location.href = '/login';
             }
         }
+        
+        // Handle CORS or network errors
+        if (status === 403 || !error.response) {
+            console.error('CORS/Network Error: Backend API may be down or blocking requests');
+        }
+        
         return Promise.reject(error);
     }
 );
