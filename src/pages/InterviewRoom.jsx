@@ -35,6 +35,11 @@ const InterviewRoom = () => {
     const currentQuestion = questions[currentIndex] || null;
     const targetRole      = interview?.targetRole || 'Unknown Role';
 
+    console.log('interview:', interview);
+    console.log('currentQuestion:', currentQuestion);
+    console.log('interviewId:', interview?.interviewId);
+    console.log('questionId:', currentQuestion?.questionId);
+
     // ── Helper: Safe Score Color ──
     const getScoreColor = (val) => {
         const score = parseFloat(val);

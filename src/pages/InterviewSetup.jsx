@@ -57,6 +57,11 @@ const InterviewSetup = () => {
         setLoading(true);
         try {
             const res = await API.post('/api/interviews/start', form);
+            if (!res.data?.interviewId || !res.data?.questions?.length) {
+                toast.error('Failed to load questions. Try again.');
+                setLoading(false);
+                return;
+            }
             toast.success('Neural Link Established. Good luck.');
             navigate('/interview/room', { state: { interview: res.data } });
         } catch (err) {
