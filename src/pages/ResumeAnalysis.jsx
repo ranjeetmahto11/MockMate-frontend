@@ -52,7 +52,7 @@ const ResumeAnalysis = () => {
         const formData = new FormData();
         formData.append('file', file);
         try {
-            const res = await API.post('/resume/analyze', formData, {
+            const res = await API.post('/api/resume/analyze', formData, {
                 headers: { 'Content-Type': 'multipart/form-data' }
             });
             setAnalysis(res.data);

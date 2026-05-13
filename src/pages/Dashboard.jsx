@@ -34,7 +34,7 @@ const Dashboard = () => {
         let isMounted = true;
         const fetchDashboard = async () => {
             try {
-                const res = await API.get('/users/dashboard');
+                const res = await API.get('/api/users/dashboard');
                 if (isMounted) setDashboard(res.data);
             } catch (err) {
                 if (isMounted) {

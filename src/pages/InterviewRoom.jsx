@@ -147,7 +147,7 @@ const InterviewRoom = () => {
         if (isListening) recognitionRef.current?.stop();
 
         try {
-            const res = await API.post('/interviews/submit-answer', {
+            const res = await API.post('/api/interviews/submit-answer', {
                 interviewId: interview.interviewId,
                 questionId:  currentQuestion?.questionId,
                 answerText:  answer || "No response recorded.",

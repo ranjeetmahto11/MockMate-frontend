@@ -56,7 +56,7 @@ const InterviewSetup = () => {
     const handleStart = async () => {
         setLoading(true);
         try {
-            const res = await API.post('/interviews/start', form);
+            const res = await API.post('/api/interviews/start', form);
             toast.success('Neural Link Established. Good luck.');
             navigate('/interview/room', { state: { interview: res.data } });
         } catch (err) {

@@ -30,7 +30,7 @@ const InterviewDetail = () => {
 
     const fetchInterview = async () => {
         try {
-            const res = await API.get(`/interviews/${id}`);
+            const res = await API.get(`/api/interviews/${id}`);
             setInterview(res.data);
         } catch (err) {
             console.error('Failed to fetch interview:', err);

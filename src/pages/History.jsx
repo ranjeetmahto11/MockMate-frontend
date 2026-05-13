@@ -33,7 +33,7 @@ const History = () => {
         const fetchHistory = async () => {
             try {
                 setLoading(true);
-                const res = await API.get('/interviews/my-interviews');
+                const res = await API.get('/api/interviews/my-interviews');
                 if (isMounted) {
                     setInterviews(Array.isArray(res.data) ? res.data : []);
                 }
